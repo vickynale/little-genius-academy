@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7ff">
+<title>Little Genius Academy</title>
+<style>
+:root{--ink:#24304a;--muted:#68748d;--paper:#f5f7ff;--white:#fff;--purple:#6656d9;--line:#e6e9f2;--green:#16865b;--red:#c44b55;--shadow:0 12px 32px rgba(43,52,91,.09)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:ui-rounded,"Trebuchet MS",system-ui,-apple-system,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0}
+.app{max-width:1120px;margin:auto;padding:24px 26px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:17px;background:#ece9ff;display:grid;place-items:center;font-size:28px}
+h1{font-size:clamp(24px,4vw,34px);margin:0;letter-spacing:-.8px}.tag{color:var(--muted);font-size:13px;margin-top:3px}
+.pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 15px;font-weight:700;color:#59647d}
+.welcome{background:linear-gradient(115deg,#6656d9,#8b79ec);color:#fff;border-radius:26px;padding:27px 30px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:var(--shadow);margin-bottom:22px}
+.welcome h2{font-size:clamp(24px,4vw,32px);margin:0 0 8px}.welcome p{margin:0;color:#eeeaff;line-height:1.5}.mascot{font-size:72px;filter:drop-shadow(0 5px 5px #43389a55)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 19px}.stat .n{font-size:26px;font-weight:850}.stat .l{color:var(--muted);font-size:13px;margin-top:3px}
+.section-title{display:flex;align-items:end;justify-content:space-between;margin:26px 0 14px}.section-title h3{margin:0;font-size:21px}.section-title span{font-size:13px;color:var(--muted)}
+.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.subject{background:#fff;border:1px solid var(--line);border-radius:22px;padding:21px;text-align:left;box-shadow:0 4px 14px rgba(43,52,91,.035);transition:.18s;min-height:188px;color:var(--ink)}
+.subject:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.subject .emoji{font-size:37px}.subject h4{font-size:19px;margin:12px 0 5px}.subject p{font-size:13px;color:var(--muted);margin:0;line-height:1.45}.subject .go{display:inline-block;margin-top:15px;color:var(--purple);font-weight:800;font-size:13px}
+.math{background:#f0f5ff}.geo{background:#edfaf3}.general{background:#fff6e9}
+.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+.hidden{display:none!important}.back{background:#f0efff;color:var(--purple);padding:10px 14px;border-radius:12px;font-weight:800;margin-bottom:16px}
+.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.subject-label{font-weight:800;color:var(--purple)}.progress{height:9px;background:#edf0f7;border-radius:20px;overflow:hidden;margin:10px 0 23px}.bar{height:100%;background:linear-gradient(90deg,#6656d9,#a294ff);width:0%;transition:width .2s}
+.qmeta{color:var(--muted);font-size:13px;font-weight:700}.question{font-size:clamp(22px,3vw,29px);line-height:1.35;margin:10px 0 22px;letter-spacing:-.4px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.option{padding:16px;border:2px solid var(--line);border-radius:15px;background:#fff;text-align:left;font-weight:700;color:var(--ink);min-height:58px}.option:hover{border-color:#a69bf2;background:#faf9ff}.option.selected{border-color:var(--purple);background:#f3f1ff}.option.correct{border-color:#45ad7d;background:#edfaf3}.option.wrong{border-color:#e28a91;background:#fff1f1}
+.answer-row{display:flex;gap:10px}.answer-row input{flex:1;min-width:0;padding:15px 16px;border:2px solid var(--line);border-radius:14px;outline:none}.answer-row input:focus{border-color:#9386eb}
+.primary{background:var(--purple);color:white;border-radius:14px;padding:14px 22px;font-weight:850}.primary:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#f0efff;color:var(--purple);border-radius:14px;padding:13px 18px;font-weight:850}
+.feedback{margin-top:17px;padding:15px 17px;border-radius:14px;line-height:1.5}.feedback.good{background:#eaf8f1;color:#176c4b}.feedback.bad{background:#fff0f0;color:#9d3943}
+.quiz-actions{display:flex;justify-content:flex-end;margin-top:18px;gap:10px}.small-note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:17px}
+.result{text-align:center;padding:22px 8px}.result .big{font-size:64px}.result h2{font-size:29px;margin:8px 0}.result p{color:var(--muted);line-height:1.6}
+.footer{text-align:center;color:#98a0b2;font-size:12px;margin-top:28px}
+@media(max-width:700px){.app{padding:16px 14px 32px}.welcome{padding:22px;border-radius:21px}.mascot{font-size:54px}.subjects{grid-template-columns:1fr}.subject{min-height:unset;display:grid;grid-template-columns:58px 1fr;column-gap:12px;align-items:center}.subject .emoji{grid-row:span 3}.subject h4{margin:0 0 4px}.subject .go{margin-top:7px}.stats{gap:8px}.stat{padding:13px}.stat .n{font-size:22px}.options{grid-template-columns:1fr}.panel{padding:18px}.answer-row{flex-direction:column}.top{margin-bottom:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">🎓</div><div><h1>Little Genius Academy</h1><div class="tag">Learn • Play • Discover</div></div></div>
+    <div class="pill">🌟 Young Explorer</div>
+  </header>
+
+  <main id="home">
+    <section class="welcome">
+      <div><h2>Ready for a little brain adventure?</h2><p>Choose a subject, solve a challenge and collect your stars.<br>Every question is a chance to learn something new!</p></div>
+      <div class="mascot">🦉</div>
+    </section>
+    <section class="stats">
+      <div class="stat"><div class="n" id="totalPoints">0 ⭐</div><div class="l">Total points</div></div>
+      <div class="stat"><div class="n" id="totalDone">0</div><div class="l">Questions answered</div></div>
+      <div class="stat"><div class="n" id="accuracy">—</div><div class="l">Correct answers</div></div>
+    </section>
+    <div class="section-title"><h3>Choose your challenge</h3><span>10 questions per adventure</span></div>
+    <section class="subjects">
+      <button class="subject math" onclick="startQuiz('math')"><div class="emoji">🔢</div><h4>Mathematics</h4><p>Numbers, patterns and clever problem-solving.</p><span class="go">Start maths →</span></button>
+      <button class="subject geo" onclick="startQuiz('geography')"><div class="emoji">🌍</div><h4>Geography</h4><p>Explore countries, capitals, oceans and our planet.</p><span class="go">Explore the world →</span></button>
+      <button class="subject general" onclick="startQuiz('general')"><div class="emoji">🧠</div><h4>General Knowledge</h4><p>Discover science, nature, space and everyday facts.</p><span class="go">Get curious →</span></button>
+    </section>
+    <div class="small-note">Parent tip: Questions are suitable as a starting point for roughly ages 7–10. You can adapt the level together. Progress is saved only in this browser on this device.</div>
+  </main>
+
+  <section id="quiz" class="panel hidden">
+    <button class="back" onclick="goHome()">← Home</button>
+    <div class="quiz-head"><div class="subject-label" id="quizSubject">Mathematics</div><div class="qmeta" id="qCount">Question 1 of 10</div></div>
+    <div class="progress"><div class="bar" id="progressBar"></div></div>
+    <div class="qmeta" id="qType">MULTIPLE CHOICE</div>
+    <div class="question" id="questionText"></div>
+    <div id="choiceArea" class="options"></div>
+    <div id="writtenArea" class="answer-row hidden"><input id="writtenAnswer" type="text" autocomplete="off" placeholder="Type your answer here"><button class="primary" onclick="checkWritten()">Check answer</button></div>
+    <div id="feedback" class="feedback hidden"></div>
+    <div class="quiz-actions"><button id="nextBtn" class="primary" onclick="nextQuestion()" disabled>Next question →</button></div>
+  </section>
+
+  <section id="result" class="panel hidden">
+    <div class="result"><div class="big" id="resultEmoji">🏆</div><h2>Adventure complete!</h2><p id="resultText"></p><div style="font-size:22px;font-weight:900;margin:18px 0" id="resultScore"></div><button class="primary" onclick="goHome()">Back to academy</button></div>
+  </section>
+  <footer class="footer">Made for curious minds ✨ · Little Genius Academy · Version 1</footer>
+</div>
+<script>
+const bank={
+math:[
+{q:"What is 8 × 7?",type:"mc",o:["54","56","64","48"],a:"56",e:"8 groups of 7 make 56."},
+{q:"A box has 24 pencils. 9 are taken out. How many are left?",type:"written",a:"15",e:"24 − 9 = 15 pencils."},
+{q:"Which number is the largest?",type:"mc",o:["0.8","0.08","0.18","0.5"],a:"0.8",e:"0.8 is the same as 0.80, which is the largest."},
+{q:"What is half of 86?",type:"written",a:"43",e:"Half means divide by 2. 86 ÷ 2 = 43."},
+{q:"What comes next: 3, 6, 12, 24, ...?",type:"mc",o:["30","36","48","42"],a:"48",e:"Each number is doubled, so 24 × 2 = 48."},
+{q:"A film starts at 14:30 and lasts 90 minutes. When does it finish?",type:"written",a:"16:00",e:"90 minutes is 1 hour and 30 minutes. The film ends at 16:00."},
+{q:"How many sides does a hexagon have?",type:"mc",o:["5","6","7","8"],a:"6",e:"A hexagon has six sides."},
+{q:"What is 125 + 275?",type:"written",a:"400",e:"125 + 275 = 400."},
+{q:"Which fraction is equal to one half?",type:"mc",o:["2/3","3/4","4/8","1/3"],a:"4/8",e:"4/8 simplifies to 1/2."},
+{q:"A notebook costs €3. You buy 4. How much do you pay?",type:"written",a:"12",e:"4 × €3 = €12. Enter 12 (or €12)."}
+],
+geography:[
+{q:"What is the capital city of France?",type:"mc",o:["Rome","Paris","Madrid","Berlin"],a:"Paris",e:"Paris is the capital of France."},
+{q:"Which is the largest ocean on Earth?",type:"mc",o:["Atlantic","Indian","Arctic","Pacific"],a:"Pacific",e:"The Pacific Ocean is the largest and deepest ocean."},
+{q:"On which continent is Brazil?",type:"written",a:"South America",e:"Brazil is in South America."},
+{q:"What is the capital of the Netherlands?",type:"mc",o:["Rotterdam","The Hague","Amsterdam","Utrecht"],a:"Amsterdam",e:"Amsterdam is the capital. The Dutch government is based in The Hague."},
+{q:"How many continents are commonly taught in the seven-continent model?",type:"written",a:"7",e:"The seven are Africa, Antarctica, Asia, Europe, North America, South America and Australia."},
+{q:"Which country is famous for the Great Pyramids of Giza?",type:"mc",o:["Greece","Egypt","Mexico","India"],a:"Egypt",e:"The Great Pyramids of Giza are in Egypt."},
+{q:"What imaginary line divides Earth into the Northern and Southern Hemispheres?",type:"mc",o:["Prime Meridian","Equator","Tropic of Cancer","Arctic Circle"],a:"Equator",e:"The Equator circles Earth halfway between the poles."},
+{q:"Which country has a maple leaf on its national flag?",type:"written",a:"Canada",e:"Canada's flag features a red maple leaf."},
+{q:"What is the name of the river that flows through London?",type:"mc",o:["Seine","Danube","Thames","Rhine"],a:"Thames",e:"The River Thames flows through London."},
+{q:"Which direction is opposite to east?",type:"written",a:"West",e:"West is the opposite direction to east."}
+],
+general:[
+{q:"Which planet is known as the Red Planet?",type:"mc",o:["Venus","Mars","Jupiter","Mercury"],a:"Mars",e:"Mars looks reddish because of iron-rich dust on its surface."},
+{q:"How many legs does a spider have?",type:"written",a:"8",e:"Spiders are arachnids and have eight legs."},
+{q:"Which part of a plant usually takes in water from the soil?",type:"mc",o:["Flower","Leaves","Roots","Fruit"],a:"Roots",e:"Roots absorb water and minerals from the soil."},
+{q:"What gas do humans need to breathe to stay alive?",type:"written",a:"Oxygen",e:"Our bodies use oxygen from the air to release energy from food."},
+{q:"Which animal is the largest mammal on Earth?",type:"mc",o:["African elephant","Blue whale","Giraffe","Hippopotamus"],a:"Blue whale",e:"The blue whale is the largest known animal on Earth."},
+{q:"How many days are there in a leap year?",type:"written",a:"366",e:"A leap year has 366 days, with an extra day in February."},
+{q:"What do bees collect from flowers to help make honey?",type:"mc",o:["Nectar","Sand","Tree bark","Seeds"],a:"Nectar",e:"Bees collect nectar from flowers and turn it into honey."},
+{q:"Which organ pumps blood around your body?",type:"written",a:"Heart",e:"Your heart pumps blood through blood vessels around your body."},
+{q:"At what temperature does water freeze in Celsius?",type:"mc",o:["0°C","10°C","50°C","100°C"],a:"0°C",e:"Pure water freezes at 0°C under normal atmospheric pressure."},
+{q:"Which star is closest to Earth?",type:"written",a:"Sun",e:"The Sun is our nearest star."}
+]};
+const labels={math:"🔢 Mathematics",geography:"🌍 Geography",general:"🧠 General Knowledge"};
+let subject="",questions=[],index=0,score=0,answered=false,correctTotal=0,answerTotal=0;
+function stats(){const s=JSON.parse(localStorage.getItem("lgaStats")||'{"points":0,"done":0,"correct":0}');document.getElementById("totalPoints").textContent=s.points+" ⭐";document.getElementById("totalDone").textContent=s.done;document.getElementById("accuracy").textContent=s.done?Math.round(s.correct/s.done*100)+"%":"—";}
+function startQuiz(s){subject=s;questions=[...bank[s]].sort(()=>Math.random()-.5);index=0;score=0;document.getElementById("home").classList.add("hidden");document.getElementById("result").classList.add("hidden");document.getElementById("quiz").classList.remove("hidden");renderQuestion();}
+function renderQuestion(){answered=false;const q=questions[index];document.getElementById("quizSubject").textContent=labels[subject];document.getElementById("qCount").textContent=`Question ${index+1} of ${questions.length}`;document.getElementById("progressBar").style.width=(index/questions.length*100)+"%";document.getElementById("questionText").textContent=q.q;document.getElementById("qType").textContent=q.type==="mc"?"MULTIPLE CHOICE":"TYPE YOUR ANSWER";document.getElementById("feedback").className="feedback hidden";document.getElementById("nextBtn").disabled=true;document.getElementById("nextBtn").textContent=index===questions.length-1?"See my results →":"Next question →";
+const choices=document.getElementById("choiceArea"),written=document.getElementById("writtenArea");choices.innerHTML="";document.getElementById("writtenAnswer").value="";
+if(q.type==="mc"){choices.classList.remove("hidden");written.classList.add("hidden");q.o.forEach(v=>{const b=document.createElement("button");b.className="option";b.textContent=v;b.onclick=()=>checkChoice(v,b);choices.appendChild(b);});}else{choices.classList.add("hidden");written.classList.remove("hidden");document.getElementById("writtenAnswer").focus();}}
+function normalize(v){return v.toLowerCase().trim().replace(/[€°\s]/g,"").replace(/,/g,".");}
+function showFeedback(ok,q){answered=true;answerTotal++;if(ok){score++;correctTotal++;}let f=document.getElementById("feedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"<strong>Brilliant! ⭐ That's correct.</strong>":"<strong>Good try! Let's learn from it.</strong>")+"<br>"+q.e;document.getElementById("nextBtn").disabled=false;let st=JSON.parse(localStorage.getItem("lgaStats")||'{"points":0,"done":0,"correct":0}');st.done++;st.correct+=ok?1:0;st.points+=ok?10:2;localStorage.setItem("lgaStats",JSON.stringify(st));stats();}
+function checkChoice(v,btn){if(answered)return;const q=questions[index];document.querySelectorAll(".option").forEach(b=>{b.disabled=true;if(b.textContent===q.a)b.classList.add("correct");});if(v!==q.a)btn.classList.add("wrong");showFeedback(v===q.a,q);}
+function checkWritten(){if(answered)return;const q=questions[index],v=document.getElementById("writtenAnswer").value;if(!v.trim()){document.getElementById("writtenAnswer").focus();return;}showFeedback(normalize(v)===normalize(q.a),q);}
+document.getElementById("writtenAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")checkWritten();});
+function nextQuestion(){if(!answered)return;index++;if(index<questions.length)renderQuestion();else finish();}
+function finish(){document.getElementById("quiz").classList.add("hidden");document.getElementById("result").classList.remove("hidden");document.getElementById("progressBar").style.width="100%";document.getElementById("resultEmoji").textContent=score>=8?"🏆":score>=5?"🌟":"💪";document.getElementById("resultText").textContent=`You answered ${score} out of ${questions.length} questions correctly. Keep practising and your skills will grow!`;document.getElementById("resultScore").textContent=`${score*10+(questions.length-score)*2} points earned in this adventure`;}
+function goHome(){document.getElementById("quiz").classList.add("hidden");document.getElementById("result").classList.add("hidden");document.getElementById("home").classList.remove("hidden");stats();}
+stats();
+</script>
+</body></html>
